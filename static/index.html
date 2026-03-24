@@ -278,11 +278,11 @@
       const isDown = g.status === "Down";
 
       return `
-        <div class="card equipment-card">
-          <div class="card-header">
-            <img src="/static/img/egate.png" class="gate-img">
-            <div class="name">${g.name}</div>
-          </div>
+      <div class="card equipment-card">
+      <div class="card-header">
+      <img src="/static/img/egate.png" class="gate-img" alt="e-gate">
+      <div class="name">${g.name}</div>
+    </div>
           <div class="meta">${g.group}</div>
           <div class="status ${isDown ? "down" : "operational"}">${g.status}</div>
           <button
@@ -346,9 +346,14 @@
       await loadData();
     }
 
-    setInterval(loadData, 1000);
     loadData();
+    setInterval(updateTimersOnly, 1000);
+    setInterval(loadData, 15000);
+  
   </script>
+  function updateTimersOnly() {
+  renderGroups();
+}
 
 </body>
 </html>
