@@ -43,7 +43,13 @@
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 10px;
     }
-
+    .gate-img {
+      width: 22px;
+      height: 40px;
+      object-fit: contain;
+      margin-right: 6px;
+}
+      
     .equipment-section {
       margin-bottom: 20px;
     }
@@ -274,7 +280,7 @@
       return `
         <div class="card equipment-card">
           <div class="card-header">
-            <span class="gate-icon">🛂</span>
+            <img src="/static/img/egate.png" class="gate-img">
             <div class="name">${g.name}</div>
           </div>
           <div class="meta">${g.group}</div>
