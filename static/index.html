@@ -1,236 +1,348 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Airport SLA</title>
-<style>
-body {
-  font-family: Arial, sans-serif;
-  background: #111;
-  color: #fff;
-  padding: 20px;
-  margin: 0;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Airport SLA Dashboard - PSP</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-h1, h2 {
-  margin-bottom: 12px;
-}
+    body {
+      margin: 0;
+      padding: 16px;
+      font-family: Arial, sans-serif;
+      background: #0f1115;
+      color: #fff;
+    }
 
-.section {
-  margin-bottom: 32px;
-}
+    h1 {
+      margin: 0 0 16px 0;
+      font-size: 24px;
+    }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 12px;
-}
+    h2 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+      color: #e5e7eb;
+    }
 
-.card {
-  background: #1b1b1b;
-  padding: 14px;
-  border-radius: 10px;
-  border: 1px solid #2a2a2a;
-}
+    h3 {
+      margin: 0 0 10px 0;
+      font-size: 15px;
+      color: #d1d5db;
+    }
 
-.name {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 6px;
-}
+    .section {
+      margin-bottom: 24px;
+    }
 
-.meta {
-  color: #bbb;
-  font-size: 13px;
-  margin-bottom: 4px;
-}
+    .group-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+    }
 
-.status {
-  display: inline-block;
-  margin-top: 8px;
-  margin-bottom: 10px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-weight: bold;
-  font-size: 12px;
-}
+    .equipment-section {
+      margin-bottom: 20px;
+    }
 
-.operational {
-  background: #14532d;
-  color: #86efac;
-}
+    .equipment-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 8px;
+    }
 
-.down {
-  background: #7f1d1d;
-  color: #fca5a5;
-}
+    .card {
+      background: #171a21;
+      border: 1px solid #262b36;
+      border-radius: 10px;
+      padding: 12px;
+    }
 
-.ok { color: #86efac; }
-.p1 { color: #ff4d4d; }
-.p2 { color: #ff944d; }
-.p3 { color: #ffd24d; }
-.p4 { color: #66ccff; }
+    .group-card {
+      min-height: 110px;
+    }
 
-.alert {
-  color: #ff4d4d;
-  font-weight: bold;
-}
+    .equipment-card {
+      padding: 10px;
+      min-height: 120px;
+    }
 
-.btn {
-  margin-top: 8px;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: bold;
-}
+    .name {
+      font-size: 15px;
+      font-weight: bold;
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
 
-.btn-red {
-  background: #dc2626;
-  color: white;
-}
+    .meta {
+      font-size: 12px;
+      color: #aeb4c0;
+      margin-bottom: 4px;
+    }
 
-.btn-green {
-  background: #16a34a;
-  color: white;
-}
-</style>
+    .status {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: bold;
+      margin-top: 6px;
+      margin-bottom: 8px;
+    }
+
+    .operational {
+      background: #123b22;
+      color: #86efac;
+    }
+
+    .down {
+      background: #5c1d1d;
+      color: #fca5a5;
+    }
+
+    .priority {
+      font-weight: bold;
+      margin-top: 6px;
+      margin-bottom: 4px;
+    }
+
+    .ok { color: #86efac; }
+    .p1 { color: #ff5f5f; }
+    .p2 { color: #ff9f43; }
+    .p3 { color: #ffd166; }
+    .p4 { color: #66ccff; }
+
+    .alert {
+      color: #ff5f5f;
+      font-weight: bold;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 8px;
+      padding: 7px 10px;
+      font-size: 11px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    .btn-red {
+      background: #dc2626;
+      color: white;
+    }
+
+    .btn-green {
+      background: #16a34a;
+      color: white;
+    }
+
+    .gate-icon {
+      font-size: 18px;
+      margin-right: 6px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .block {
+      background: #11141a;
+      border: 1px solid #212632;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 14px;
+    }
+
+    .top-note {
+      color: #9ca3af;
+      font-size: 12px;
+      margin-bottom: 18px;
+    }
+  </style>
 </head>
 <body>
 
-<h1>Airport SLA Dashboard</h1>
+  <h1>Airport SLA Dashboard - PSP</h1>
+  <div class="top-note">Visualização simplificada para apoio operacional da equipa</div>
 
-<div class="section">
-  <h2>Grupos (SLA)</h2>
-  <div id="groups" class="grid"></div>
-</div>
+  <div class="section">
+    <h2>Grupos SLA</h2>
+    <div id="groups" class="group-grid"></div>
+  </div>
 
-<div class="section">
-  <h2>Equipamentos</h2>
-  <div id="gates" class="grid"></div>
-</div>
+  <div class="section">
+    <h2>Equipamentos</h2>
 
-<script>
-let groups = [];
-let gates = [];
+    <div class="block equipment-section">
+      <h3>Lisboa T1 - Chegadas</h3>
+      <div id="lis-t1-chegadas" class="equipment-grid"></div>
+    </div>
 
-function formatTime(ms) {
-  let s = Math.floor(ms / 1000);
-  let h = Math.floor(s / 3600);
-  let m = Math.floor((s % 3600) / 60);
-  let sec = s % 60;
-  return `${h}h ${m}m ${sec}s`;
-}
+    <div class="block equipment-section">
+      <h3>Lisboa T1 - Partidas</h3>
+      <div id="lis-t1-partidas" class="equipment-grid"></div>
+    </div>
 
-function getPriorityClass(p) {
-  if (p === "P1") return "p1";
-  if (p === "P2") return "p2";
-  if (p === "P3") return "p3";
-  if (p === "P4") return "p4";
-  return "ok";
-}
+    <div class="block equipment-section">
+      <h3>Zona T</h3>
+      <div id="zona-t" class="equipment-grid"></div>
+    </div>
 
-function renderGroups() {
-  const container = document.getElementById("groups");
-  container.innerHTML = "";
+    <div class="block equipment-section">
+      <h3>Lisboa T2 - Partidas</h3>
+      <div id="lis-t2-partidas" class="equipment-grid"></div>
+    </div>
+  </div>
 
-  groups.forEach(g => {
-    let elapsed = "";
-    let remaining = "";
-    let alertClass = "";
+  <script>
+    let groups = [];
+    let gates = [];
 
-    if (g.incident_start) {
-      const start = new Date(g.incident_start);
-      const now = new Date();
-
-      const diff = now - start;
-      const total = g.sla_hours * 3600000;
-
-      elapsed = formatTime(diff);
-
-      const left = total - diff;
-      if (left < 0) {
-        remaining = "ESTOURADO";
-        alertClass = "alert";
-      } else {
-        remaining = formatTime(left);
-        if (left < 15 * 3600000) {
-          alertClass = "alert";
-        }
-      }
+    function formatTime(ms) {
+      const s = Math.floor(ms / 1000);
+      const h = Math.floor(s / 3600);
+      const m = Math.floor((s % 3600) / 60);
+      const sec = s % 60;
+      return `${h}h ${m}m ${sec}s`;
     }
 
-    container.innerHTML += `
-      <div class="card">
-        <div class="name">${g.group}</div>
-        <div>Down: ${g.down_count}</div>
-        <div class="${getPriorityClass(g.priority)}"><b>${g.priority}</b></div>
-        ${
-          g.incident_start
-            ? `<div>Elapsed: ${elapsed}</div>
-               <div class="${alertClass}">Remaining: ${remaining}</div>`
-            : `<div class="ok">Sem incidente</div>`
+    function getPriorityClass(p) {
+      if (p === "P1") return "p1";
+      if (p === "P2") return "p2";
+      if (p === "P3") return "p3";
+      if (p === "P4") return "p4";
+      return "ok";
+    }
+
+    function renderGroups() {
+      const container = document.getElementById("groups");
+      container.innerHTML = "";
+
+      groups.forEach(g => {
+        let elapsed = "";
+        let remaining = "";
+        let alertClass = "";
+
+        if (g.incident_start) {
+          const start = new Date(g.incident_start);
+          const now = new Date();
+          const diff = now - start;
+          const total = g.sla_hours * 3600000;
+
+          elapsed = formatTime(diff);
+
+          const left = total - diff;
+          if (left < 0) {
+            remaining = "ESTOURADO";
+            alertClass = "alert";
+          } else {
+            remaining = formatTime(left);
+            if (left < 15 * 3600000) {
+              alertClass = "alert";
+            }
+          }
         }
-      </div>
-    `;
-  });
-}
 
-function renderGates() {
-  const container = document.getElementById("gates");
-  container.innerHTML = "";
+        container.innerHTML += `
+          <div class="card group-card">
+            <div class="name">${g.group}</div>
+            <div class="meta">Down: ${g.down_count} / ${g.total_gates}</div>
+            <div class="priority ${getPriorityClass(g.priority)}">${g.priority}</div>
+            ${
+              g.incident_start
+                ? `
+                  <div class="meta">Elapsed: ${elapsed}</div>
+                  <div class="meta ${alertClass}">Remaining: ${remaining}</div>
+                `
+                : `<div class="meta ok">Sem incidente</div>`
+            }
+          </div>
+        `;
+      });
+    }
 
-  gates.forEach(g => {
-    const isDown = g.status === "Down";
+    function equipmentCard(g) {
+      const isDown = g.status === "Down";
 
-    container.innerHTML += `
-      <div class="card">
-        <div class="name">${g.name}</div>
-        <div class="meta">Projeto: ${g.project}</div>
-        <div class="meta">Grupo: ${g.group}</div>
-        <div class="status ${isDown ? "down" : "operational"}">${g.status}</div>
-        <div>
+      return `
+        <div class="card equipment-card">
+          <div class="card-header">
+            <span class="gate-icon">🛂</span>
+            <div class="name">${g.name}</div>
+          </div>
+          <div class="meta">${g.group}</div>
+          <div class="status ${isDown ? "down" : "operational"}">${g.status}</div>
           <button
             class="btn ${isDown ? "btn-green" : "btn-red"}"
             onclick="toggleStatus(${g.id})">
             ${isDown ? "Voltar Operational" : "Marcar Down"}
           </button>
         </div>
-      </div>
-    `;
-  });
-}
+      `;
+    }
 
-async function loadData() {
-  const groupsRes = await fetch("/api/groups");
-  const gatesRes = await fetch("/api/gates");
+    function renderGates() {
+      const t1Chegadas = document.getElementById("lis-t1-chegadas");
+      const t1Partidas = document.getElementById("lis-t1-partidas");
+      const zonaT = document.getElementById("zona-t");
+      const t2Partidas = document.getElementById("lis-t2-partidas");
 
-  groups = await groupsRes.json();
-  gates = await gatesRes.json();
+      t1Chegadas.innerHTML = "";
+      t1Partidas.innerHTML = "";
+      zonaT.innerHTML = "";
+      t2Partidas.innerHTML = "";
 
-  renderGroups();
-  renderGates();
-}
+      gates.forEach(g => {
+        const card = equipmentCard(g);
 
-async function toggleStatus(id) {
-  const gate = gates.find(g => g.id === id);
-  if (!gate) return;
+        if (g.group === "LIS T1 Chegadas") {
+          t1Chegadas.innerHTML += card;
+        } else if (g.group === "LIS T1 Partidas") {
+          t1Partidas.innerHTML += card;
+        } else if (g.group === "Zona T") {
+          zonaT.innerHTML += card;
+        } else if (g.group === "LIS T2 Partidas") {
+          t2Partidas.innerHTML += card;
+        }
+      });
+    }
 
-  const newStatus = gate.status === "Operational" ? "Down" : "Operational";
+    async function loadData() {
+      const groupsRes = await fetch("/api/groups");
+      const gatesRes = await fetch("/api/gates");
 
-  await fetch(`/api/gates/${id}/status`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ status: newStatus })
-  });
+      groups = await groupsRes.json();
+      gates = await gatesRes.json();
 
-  await loadData();
-}
+      renderGroups();
+      renderGates();
+    }
 
-setInterval(loadData, 1000);
-loadData();
-</script>
+    async function toggleStatus(id) {
+      const gate = gates.find(g => g.id === id);
+      if (!gate) return;
+
+      const newStatus = gate.status === "Operational" ? "Down" : "Operational";
+
+      await fetch(`/api/gates/${id}/status`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus })
+      });
+
+      await loadData();
+    }
+
+    setInterval(loadData, 1000);
+    loadData();
+  </script>
 
 </body>
 </html>
