@@ -106,27 +106,32 @@ VALUES (?, ?, ?, ?, ?)
 
 
 def calculate_priority(group_name, down_count):
-    if group_name.startswith("Boarding"):
+    # LIS T1 Chegadas / Partidas
+    if group_name in ["LIS T1 Chegadas", "LIS T1 Partidas"]:
+        if down_count >= 7:
+            return "P1"
+        elif down_count >= 4:
+            return "P2"
+        elif down_count >= 3:
+            return "P3"
+        return "OK"
+
+    # Zona T
+    if group_name == "Zona T":
         if down_count >= 2:
             return "P1"
         elif down_count == 1:
             return "P2"
         return "OK"
 
-    if group_name == "Security":
-        if down_count >= 12:
+    # LIS T2
+    if group_name == "LIS T2 Partidas":
+        if down_count >= 3:
             return "P1"
-        elif down_count >= 8:
+        elif down_count == 2:
             return "P2"
-        elif down_count >= 4:
-            return "P3"
         elif down_count >= 1:
-            return "P4"
-        return "OK"
-
-    if group_name == "Enrollment":
-        if down_count >= 1:
-            return "P4"
+            return "P3"
         return "OK"
 
     return "OK"
