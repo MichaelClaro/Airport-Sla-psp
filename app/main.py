@@ -46,36 +46,54 @@ def init_db():
     cur.execute("DELETE FROM group_incidents")
 
     cur.executemany("""
-    INSERT INTO gates (id, name, project_name, group_name, status)
-    VALUES (?, ?, ?, ?, ?)
-    """, [
-        (1, "SCP 11", "ANASEAMLESS", "Security", "Operational"),
-        (2, "SCP 12", "ANASEAMLESS", "Security", "Operational"),
-        (3, "SCP 14", "ANASEAMLESS", "Security", "Operational"),
-        (4, "SCP 15", "ANASEAMLESS", "Security", "Operational"),
-        (5, "SCP 16", "ANASEAMLESS", "Security", "Operational"),
-        (6, "SCP 17", "ANASEAMLESS", "Security", "Operational"),
-        (7, "SCP 21", "ANASEAMLESS", "Security", "Operational"),
-        (8, "SCP 22", "ANASEAMLESS", "Security", "Operational"),
-        (9, "SCP 23", "ANASEAMLESS", "Security", "Operational"),
-        (10, "SCP 24", "ANASEAMLESS", "Security", "Operational"),
-        (11, "SCP 25", "ANASEAMLESS", "Security", "Operational"),
-        (12, "SCP 28", "ANASEAMLESS", "Security", "Operational"),
-        (13, "SCP 29", "ANASEAMLESS", "Security", "Operational"),
-        (14, "SCP 30", "ANASEAMLESS", "Security", "Operational"),
-        (15, "SCP 31", "ANASEAMLESS", "Security", "Operational"),
-        (16, "KIOSK 01", "ANASEAMLESS", "Enrollment", "Operational"),
-        (17, "KIOSK 03", "ANASEAMLESS", "Enrollment", "Operational"),
-        (18, "KIOSK 04", "ANASEAMLESS", "Enrollment", "Operational"),
-        (19, "KIOSK 05", "ANASEAMLESS", "Enrollment", "Operational"),
-        (20, "KIOSK 06", "ANASEAMLESS", "Enrollment", "Operational"),
-        (21, "SBG25-01", "ANASEAMLESS", "Boarding SBG25", "Operational"),
-        (22, "SBG25-02", "ANASEAMLESS", "Boarding SBG25", "Operational"),
-        (23, "SBG46-01", "ANASEAMLESS", "Boarding SBG46", "Operational"),
-        (24, "SBG46-02", "ANASEAMLESS", "Boarding SBG46", "Operational"),
-        (25, "SBG47-01", "ANASEAMLESS", "Boarding SBG47", "Operational"),
-        (26, "SBG47-02", "ANASEAMLESS", "Boarding SBG47", "Operational"),
-    ])
+INSERT INTO gates (id, name, project_name, group_name, status)
+VALUES (?, ?, ?, ?, ?)
+""", [
+    # Lisboa T1 Chegadas (14)
+    (1, "T1-CHEG-01", "PSP", "LIS T1 Chegadas", "Operational"),
+    (2, "T1-CHEG-02", "PSP", "LIS T1 Chegadas", "Operational"),
+    (3, "T1-CHEG-03", "PSP", "LIS T1 Chegadas", "Operational"),
+    (4, "T1-CHEG-04", "PSP", "LIS T1 Chegadas", "Operational"),
+    (5, "T1-CHEG-05", "PSP", "LIS T1 Chegadas", "Operational"),
+    (6, "T1-CHEG-06", "PSP", "LIS T1 Chegadas", "Operational"),
+    (7, "T1-CHEG-07", "PSP", "LIS T1 Chegadas", "Operational"),
+    (8, "T1-CHEG-08", "PSP", "LIS T1 Chegadas", "Operational"),
+    (9, "T1-CHEG-09", "PSP", "LIS T1 Chegadas", "Operational"),
+    (10, "T1-CHEG-10", "PSP", "LIS T1 Chegadas", "Operational"),
+    (11, "T1-CHEG-11", "PSP", "LIS T1 Chegadas", "Operational"),
+    (12, "T1-CHEG-12", "PSP", "LIS T1 Chegadas", "Operational"),
+    (13, "T1-CHEG-13", "PSP", "LIS T1 Chegadas", "Operational"),
+    (14, "T1-CHEG-14", "PSP", "LIS T1 Chegadas", "Operational"),
+
+    # Lisboa T1 Partidas (14)
+    (15, "T1-PART-01", "PSP", "LIS T1 Partidas", "Operational"),
+    (16, "T1-PART-02", "PSP", "LIS T1 Partidas", "Operational"),
+    (17, "T1-PART-03", "PSP", "LIS T1 Partidas", "Operational"),
+    (18, "T1-PART-04", "PSP", "LIS T1 Partidas", "Operational"),
+    (19, "T1-PART-05", "PSP", "LIS T1 Partidas", "Operational"),
+    (20, "T1-PART-06", "PSP", "LIS T1 Partidas", "Operational"),
+    (21, "T1-PART-07", "PSP", "LIS T1 Partidas", "Operational"),
+    (22, "T1-PART-08", "PSP", "LIS T1 Partidas", "Operational"),
+    (23, "T1-PART-09", "PSP", "LIS T1 Partidas", "Operational"),
+    (24, "T1-PART-10", "PSP", "LIS T1 Partidas", "Operational"),
+    (25, "T1-PART-11", "PSP", "LIS T1 Partidas", "Operational"),
+    (26, "T1-PART-12", "PSP", "LIS T1 Partidas", "Operational"),
+    (27, "T1-PART-13", "PSP", "LIS T1 Partidas", "Operational"),
+    (28, "T1-PART-14", "PSP", "LIS T1 Partidas", "Operational"),
+
+    # Zona T (4)
+    (29, "ZT-01", "PSP", "Zona T", "Operational"),
+    (30, "ZT-02", "PSP", "Zona T", "Operational"),
+    (31, "ZT-03", "PSP", "Zona T", "Operational"),
+    (32, "ZT-04", "PSP", "Zona T", "Operational"),
+
+    # T2 Partidas (5)
+    (33, "T2-PART-01", "PSP", "LIS T2 Partidas", "Operational"),
+    (34, "T2-PART-02", "PSP", "LIS T2 Partidas", "Operational"),
+    (35, "T2-PART-03", "PSP", "LIS T2 Partidas", "Operational"),
+    (36, "T2-PART-04", "PSP", "LIS T2 Partidas", "Operational"),
+    (37, "T2-PART-05", "PSP", "LIS T2 Partidas", "Operational"),
+])
 
     for group_name in ["Security", "Enrollment", "Boarding SBG25", "Boarding SBG46", "Boarding SBG47"]:
         cur.execute("""
