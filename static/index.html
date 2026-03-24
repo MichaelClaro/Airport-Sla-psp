@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Airport SLA</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: #fff;
+  padding: 20px;
+  margin: 0;
+}
+
+h1, h2 {
+  margin-bottom: 12px;
+}
+
+.section {
+  margin-bottom: 32px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  background: #1b1b1b;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #2a2a2a;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.meta {
+  color: #bbb;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.status {
+  display: inline-block;
+  margin-top: 8px;
+  margin-bottom: 10px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.operational {
+  background: #14532d;
+  color: #86efac;
+}
+
+.down {
+  background: #7f1d1d;
+  color: #fca5a5;
+}
+
+.ok { color: #86efac; }
+.p1 { color: #ff4d4d; }
+.p2 { color: #ff944d; }
+.p3 { color: #ffd24d; }
+.p4 { color: #66ccff; }
+
+.alert {
+  color: #ff4d4d;
+  font-weight: bold;
+}
+
+.btn {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.btn-red {
+  background: #dc2626;
+  color: white;
+}
+
+.btn-green {
+  background: #16a34a;
+  color: white;
+}
+</style>
+</head>
+<body>
+
+<h1>Airport SLA Dashboard</h1>
+
+<div class="section">
+  <h2>Grupos (SLA)</h2>
+  <div id="groups" class="grid"></div>
+</div>
+
+<div class="section">
+  <h2>Equipamentos</h2>
+  <div id="gates" class="grid"></div>
+</div>
+
+<script>
+let groups = [];
+let gates = [];
+
+function formatTime(ms) {
+  let s = Math.floor(ms / 1000);
+  let h = Math.floor(s / 3600);
+  let m = Math.floor((s % 3600) / 60);
+  let sec = s % 60;
+  return `${h}h ${m}m ${sec}s`;
+}
+
+function getPriorityClass(p) {
+  if (p === "P1") return "p1";
+  if (p === "P2") return "p2";
+  if (p === "P3") return "p3";
+  if (p === "P4") return "p4";
+  return "ok";
+}
+
+function renderGroups() {
+  const container = document.getElementById("groups");
+  container.innerHTML = "";
+
+  groups.forEach(g => {
+    let elapsed = "";
+    let remaining = "";
+    let alertClass = "";
+
+    if (g.incident_start) {
+      const start = new Date(g.incident_start);
+      const now = new Date();
+
+      const diff = now - start;
+      const total = g.sla_hours * 3600000;
+
+      elapsed = formatTime(diff);
+
+      const left = total - diff;
+      if (left < 0) {
+        remaining = "ESTOURADO";
+        alertClass = "alert";
+      } else {
+        remaining = formatTime(left);
+        if (left < 15 * 3600000) {
+          alertClass = "alert";
+        }
+      }
+    }
+
+    container.innerHTML += `
+      <div class="card">
+        <div class="name">${g.group}</div>
+        <div>Down: ${g.down_count}</div>
+        <div class="${getPriorityClass(g.priority)}"><b>${g.priority}</b></div>
+        ${
+          g.incident_start
+            ? `<div>Elapsed: ${elapsed}</div>
+               <div class="${alertClass}">Remaining: ${remaining}</div>`
+            : `<div class="ok">Sem incidente</div>`
+        }
+      </div>
+    `;
+  });
+}
+
+function renderGates() {
+  const container = document.getElementById("gates");
+  container.innerHTML = "";
+
+  gates.forEach(g => {
+    const isDown = g.status === "Down";
+
+    container.innerHTML += `
+      <div class="card">
+        <div class="name">${g.name}</div>
+        <div class="meta">Projeto: ${g.project}</div>
+        <div class="meta">Grupo: ${g.group}</div>
+        <div class="status ${isDown ? "down" : "operational"}">${g.status}</div>
+        <div>
+          <button
+            class="btn ${isDown ? "btn-green" : "btn-red"}"
+            onclick="toggleStatus(${g.id})">
+            ${isDown ? "Voltar Operational" : "Marcar Down"}
+          </button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+async function loadData() {
+  const groupsRes = await fetch("/api/groups");
+  const gatesRes = await fetch("/api/gates");
+
+  groups = await groupsRes.json();
+  gates = await gatesRes.json();
+
+  renderGroups();
+  renderGates();
+}
+
+async function toggleStatus(id) {
+  const gate = gates.find(g => g.id === id);
+  if (!gate) return;
+
+  const newStatus = gate.status === "Operational" ? "Down" : "Operational";
+
+  await fetch(`/api/gates/${id}/status`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status: newStatus })
+  });
+
+  await loadData();
+}
+
+setInterval(loadData, 1000);
+loadData();
+</script>
+
+</body>
+</html>
