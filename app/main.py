@@ -95,7 +95,12 @@ VALUES (?, ?, ?, ?, ?)
     (37, "T2-PART-05", "PSP", "LIS T2 Partidas", "Operational"),
 ])
 
-    for group_name in ["Security", "Enrollment", "Boarding SBG25", "Boarding SBG46", "Boarding SBG47"]:
+    for group_name in [
+    "LIS T1 Chegadas",
+    "LIS T1 Partidas",
+    "Zona T",
+    "LIS T2 Partidas"
+]:
         cur.execute("""
         INSERT INTO group_incidents (group_name, incident_start, current_priority)
         VALUES (?, NULL, 'OK')
