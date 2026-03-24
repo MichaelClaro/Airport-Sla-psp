@@ -4,8 +4,11 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import sqlite3
 from datetime import datetime
+from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 DB_PATH = "airport_v2.db"
 
